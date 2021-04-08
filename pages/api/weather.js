@@ -20,23 +20,23 @@ export default async ({ query: { searchInput, geolocation } }, res) => {
       feelsLikeTemp: Math.floor(responseJSON.main.feels_like),
       weatherIcon: responseJSON.weather[0].icon,
       weatherDescription: responseJSON.weather[0].main,
+      stationName: responseJSON.name,
       //reverseGeocode:
       cityName: locationInformation.city,
       stateName: locationInformation.state,
     });
   } catch (error) {
     console.log(error);
-    return {};
+    res.status(400).send(error.toString());
   }
 };
 
 const geocode = async (scanText) => {
   try {
-    const response = await fetch(
-      `https://geocode.xyz/?scantext=${encodeURIComponent(
-        scanText
-      )}&json=1&region=US`
-    );
+    const url = `https://geocode.xyz/?scantext=${encodeURIComponent(
+      scanText
+    )}&json=1&region=US`;
+    const response = await fetch(url);
     const responseJSON = await response.json();
     const bestMatch =
       responseJSON.matches * 1 > 0 ? responseJSON.match[0] : responseJSON;
@@ -47,12 +47,11 @@ const geocode = async (scanText) => {
 };
 
 const reverseGeocode = async (coords) => {
-  console.log("called");
   try {
-    const response = await fetch(
-      `https://geocode.xyz/?locate=${encodeURIComponent(coords)}&json=1`
-    );
-
+    const url = `https://geocode.xyz/?locate=${encodeURIComponent(
+      coords
+    )}&json=1`;
+    const response = await fetch(url);
     const responseJSON = await response.json();
 
     return {
