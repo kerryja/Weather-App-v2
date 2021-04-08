@@ -16,6 +16,11 @@ body {
   color: #495867!important;
 }
 
+.search-buttons:hover {
+  background-color: #495867!important;
+  color: #F7F7FF!important;
+}
+
 input#location-input {
   min-width: 300px;
 }

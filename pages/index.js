@@ -1,4 +1,5 @@
 import Head from "next/head";
+import WeatherIcon from "../components/WeatherIcon";
 import useSWR from "swr";
 import { useState, useEffect } from "react";
 import { geolocationCall } from "../geolocation";
@@ -82,10 +83,39 @@ export default function Home() {
     }
   };
 
+  const displayWeatherIcon = (data) => {
+    if (!data || !data.weatherDescription) {
+      return ["/not_applicable.svg", "N/A"];
+    }
+    const descriptionLowerCase = data.weatherDescription.toLowerCase();
+    let date = new Date();
+    const isDaytime = date.getHours() >= 5 && date.getHours() <= 18;
+
+    if (descriptionLowerCase.includes("cloud") && isDaytime) {
+      return ["/weather_icons/animated/cloudy-day.svg", "cloudy day"];
+    } else if (descriptionLowerCase.includes("cloud") && !isDaytime) {
+      return ["/weather_icons/animated/cloudy-night.svg", "cloudy night"];
+    } else if (
+      (descriptionLowerCase.includes("clear") ||
+        descriptionLowerCase.includes("sun")) &&
+      isDaytime
+    ) {
+      return ["/weather_icons/animated/day.svg", "sun"];
+    } else if (descriptionLowerCase.includes("clear") && !isDaytime) {
+      return ["/weather_icons/animated/night.svg", "moon"];
+    } else if (descriptionLowerCase.includes("snow")) {
+      return ["/weather_icons/animated/snowy.svg", "snowy"];
+    } else if (descriptionLowerCase.includes("rain")) {
+      return ["/weather_icons/animated/rainy.svg", "rain"];
+    } else {
+      return ["/not_applicable.svg", "N/A"];
+    }
+  };
+
   return (
     <>
       <Head>
-        <title>Weather App</title>
+        <title>Weather</title>
         <link
           rel="stylesheet"
           href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
@@ -124,6 +154,9 @@ export default function Home() {
             <div id="temperature">
               {displayTemperature(data, (d) => d.temperature)}
             </div>
+
+            <WeatherIcon src={displayWeatherIcon(data)} />
+
             <div className="weather-description mb-2">
               {displayWeatherDescription(data)}
             </div>
