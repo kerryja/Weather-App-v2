@@ -2,15 +2,28 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  background-color: #577399!important;
+  color: #F7F7FF!important;
+
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+.left-buttons {
+  background-color: #FE5F55!important;
 }
 
-* {
-  box-sizing: border-box;
+.search-buttons {
+  background-color: #BDD5EA!important;
+  color: #495867!important;
+}
+
+input#location-input {
+  min-width: 300px;
+}
+
+#temperature {
+  font-size: 2.5rem;
+}
+
+.weather-description {
+  font-size: 1.5rem;
 }
